@@ -26,6 +26,9 @@ RUN \
  && apt-get update \
  && apt-get install -y -q --no-install-recommends \
     apt-utils \
+ && curl -O https://hyperledger.github.io/composer/latest/prereqs-ubuntu.sh \
+ && chmod u+x prereqs-ubuntu.sh \
+ && ./prereqs-ubuntu.sh \
  && apt-get install -y -q \
     apt-transport-https \
     build-essential \
