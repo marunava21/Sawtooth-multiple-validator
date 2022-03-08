@@ -42,21 +42,21 @@ services:
     container_name: rest-api
     image: hyperledger/sawtooth-rest-api:1.0
     expose:
-      - 8000
+      - 8008
     ports:
-      - '8000:8000'
+      - '8008:8008'
     depends_on:
       - validator
     entrypoint: |
       sawtooth-rest-api -vvv
-        --connect tcp://172.27.94.31:4004
-        --bind rest-api:8008
+        --connect tcp://172.27.104.197:4004
+        --bind 127.0.0.1:8008
   settings-tp:
     container_name: settings-tp
     image: hyperledger/sawtooth-settings-tp:1.0
     depends_on:
       - validator
-    command: settings-tp -vv --connect tcp://172.27.94.31:4004
+    command: settings-tp -vv --connect tcp://172.27.104.197:4004
 
 # -------------=== shell ===-------------
 
@@ -100,18 +100,18 @@ services:
         fi &&
         sawtooth keygen my_key &&
         sawtooth-validator -vv \
-          --endpoint tcp:// 172.27.94.31:8800 \
-          --bind component:tcp://eth0:4004 \
-          --bind consensus:tcp://eth0:5050 \
-          --bind network:tcp://172.27.94.31:8800 \
+          --endpoint tcp://172.27.104.197:8800 \
+          --bind component:tcp://127.0.0.1:4004 \
+          --bind consensus:tcp://127.0.0.1:5050 \
+          --bind network:tcp://172.27.104.197:8800 \
           --scheduler parallel \
           --peering dynamic\
           --maximum-peer-connectivity 10000 \
-          --seeds tcp://3.80.48.35:8800 \
+          --seeds tcp://52.70.96.63:8800 \
           --network-auth trust 
       "
   pbft-1:
    image: hyperledger/sawtooth-pbft-engine:1.0
    container_name: sawtooth-pbft-engine-default
-   command: pbft-engine -vv --connect tcp://172.27.94.31:5050
+   command: pbft-engine -vv --connect tcp://127.0.0.1:5050
    stop_signal: SIGKILL
